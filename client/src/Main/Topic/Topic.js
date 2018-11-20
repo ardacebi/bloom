@@ -14,6 +14,7 @@ import Post from '../shared/Post/Post';
 import Input from '../../shared/Input/Input';
 import Button from '../../shared/Button/Button';
 import Sort from '../shared/Sort/Sort';
+import FontAwesome from '../../shared/FontAwesome/FontAwesome';
 
 import listPosts from './api/listPosts';
 import createPost from './api/createPost';
@@ -23,7 +24,8 @@ export default class Topic extends Component {
     posts: [],
     sort: 'popular',
     refreshing: false,
-    post: ''
+    post: '',
+    anonymous: false
   }
 
   componentWillMount = () => {
@@ -53,7 +55,6 @@ export default class Topic extends Component {
           return Alert.alert(err);
         }
         this.setState({
-          post: '',
           posts: res.posts,
           refreshing: false
         });
@@ -67,7 +68,10 @@ export default class Topic extends Component {
     createPost(
       this.props.jwt, 
       this.props.topic, 
-      {text: this.state.post},
+      {
+        text: this.state.post,
+        anonymous: this.state.anonymous
+      },
       (err, res) => {
         if (err && !res) {
           if (err === 'unauthenticated') return this.props.goHome();
@@ -77,13 +81,17 @@ export default class Topic extends Component {
         listPosts(
           this.props.jwt, 
           this.props.topic,
-          this.state.sort, 
+          'new', 
           (err, res) => {
             if (err && !res) {
               if (err === 'unauthenticated') return this.props.goHome();
               return Alert.alert(err);
             }
-            this.setState({posts: res.posts});
+            this.setState({
+              sort: 'new',
+              post: '',
+              posts: res.posts
+            });
           }
         );
       }
@@ -107,33 +115,48 @@ export default class Topic extends Component {
             />
           }
         >
-          <View style={styles.controls}>
+          <View style={styles.topicContainer}>
             <View style={styles.topic}>
               <TouchableOpacity
                 style={styles.backButtonContainer}
                 onPress={() => this.props.changePage('Feed')}
               >
-                <Image 
+                <FontAwesome 
                   style={styles.backButton}
-                  resizeMode="contain"
-                  source={require('../../images/back--black.png')}
+                  icon="chevronLeft"
                 />
               </TouchableOpacity>
-              <Text style={styles.topicName}>{this.props.topic}</Text>
+              <View style={styles.topicNameContainer}>
+                <Text style={styles.topicName}>{this.props.topic}</Text>
+              </View>
             </View>
-            <View style={styles.form}>
-              <Input 
-                placeholder="Fikrini paylaş"
-                multiline={true}
-                onChangeText={this.onChangeText}
-                value={this.state.post}
-                containerStyle={{marginBottom: 15}}
-              />
-              <Button 
-                text="Paylaş"
-                onPress={this.onPress}
-              />
-            </View>
+          </View>
+          <View style={styles.form}>
+            <Input 
+              placeholder="Fikrini paylaş"
+              multiline={true}
+              onChangeText={this.onChangeText}
+              value={this.state.post}
+              containerStyle={{marginBottom: 15}}
+            />
+            <TouchableOpacity
+              style={styles.checkboxContainer}
+              onPress={() => this.setState({anonymous: !this.state.anonymous})}
+            >
+              <View style={[styles.checkbox, this.state.anonymous ? styles.checkboxActive : styles.checkboxInactive]}>
+                {this.state.anonymous &&
+                  <FontAwesome 
+                    style={styles.checkboxIcon}
+                    icon="check"
+                  />
+                }
+              </View>
+              <Text style={styles.checkboxText}>Anonim</Text>
+            </TouchableOpacity>
+            <Button 
+              text="Paylaş"
+              onPress={this.onPress}
+            />
           </View>
           <Sort 
             sort={this.state.sort}
@@ -160,9 +183,15 @@ const styles = StyleSheet.create({
     flex: 1
   },
   posts: {
-    padding: 15,
+    padding: 15
   },
-  controls: {
+  topic: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
     backgroundColor: 'white',
     marginBottom: 15,
     borderRadius: 10,
@@ -172,25 +201,23 @@ const styles = StyleSheet.create({
     shadowRadius: 5, 
     elevation: 1
   },
-  topic: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    alignItems: 'center'
+  topicNameContainer: {
+    flex: 1
   },
   topicName: {
-    flex: 1,
     color: '#202020',
     fontWeight: '100'
   },
-  postsCount: {
-    width: '15%',
-    textAlign: 'right',
-    color: '#707070',
-    fontWeight: '500'
-  },
   form: {
-    padding: 15
+    padding: 15,
+    backgroundColor: 'white',
+    marginBottom: 15,
+    borderRadius: 10,
+    shadowColor: '#000', 
+    shadowOffset: {width: 0, height: 0}, 
+    shadowOpacity: 0.1, 
+    shadowRadius: 5, 
+    elevation: 1
   },
   backButtonContainer: {
     width: 30,
@@ -200,7 +227,30 @@ const styles = StyleSheet.create({
     marginLeft: -12.5
   },
   backButton: {
-    width: 12.5,
-    height: 12.5
+    fontSize: 15,
+    color: 'rgba(0, 0, 0, 0.75)'
+  },
+  checkboxContainer: {
+    marginBottom: 15,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderRadius: 5,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  checkboxActive: {
+    backgroundColor: '#16425B',
+  },
+  checkboxInactive: {
+    backgroundColor: 'rgba(0, 0, 0, 0.1)'
+  },
+  checkboxIcon: {
+    color: 'white',
+    fontSize: 12.5
   }
 });

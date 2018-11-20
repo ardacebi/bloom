@@ -21,7 +21,9 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
+	<key>CodePushDeploymentKey</key>
+	<string>ohPFB5shbDLnHPmMYWiEysXTFCn1r1xaUPjp7</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -37,13 +39,23 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için Apple Music iznine ihtiyaç duyuyor.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için bluetooth iznine ihtiyaç duyuyor.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için takvim iznine ihtiyaç duyuyor.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için kamera iznine ihtiyaç duyuyor.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için hareket sensörü iznine ihtiyaç duyuyor.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için fotoğraf iznine ihtiyaç duyuyor.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Bu uygulama bazı işlemleri için ses tanıma iznine ihtiyaç duyuyor.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>fa-regular-400.ttf</string>
 		<string>fa-solid-900.ttf</string>
-		<string>fa-brands-400.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -53,6 +65,8 @@
 	</array>
 	<key>UIStatusBarHidden</key>
 	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
